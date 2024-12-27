@@ -14,7 +14,10 @@ class HistoryPage extends StatelessWidget {
         itemCount: history.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Image.network(history[index]),
+            leading: Image.network(
+              history[index],
+              width: 50,
+            ),
             title: Text('Dog ${index + 1}'),
           );
         },

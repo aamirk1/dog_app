@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dog_app/cartScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? dogImageUrl;
   List<String> history = [];
-  final List<Map<String, double>> cart = [];
+  List<Map<String, dynamic>> cart = [];
   final String imageUrl = "https://example.com/product_image.jpg";
   final double price = 19.99;
 
@@ -51,15 +50,17 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.shopping_cart),
               onPressed: () async {
                 // When the button is pressed, navigate to the CartPage with product details
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CartPage(
-                      imageUrl: imageUrl,
-                      price: price,
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, '/cart', arguments: cart);
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => CartPage(
+                //       imageUrl: imageUrl,
+                //       price: price,
+                //     ),
+                //   ),
+                // );
                 // Navigator.pushNamed(context, '/cart',
                 //     arguments: {'imageUrl': dogImageUrl, 'price': 10.0});
               }),
@@ -70,7 +71,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             dogImageUrl != null
-                ? Image.network(dogImageUrl!)
+                ? Image.network(
+                    dogImageUrl!,
+                    height: 250,
+                  )
                 : CircularProgressIndicator(),
             SizedBox(height: 20),
             ElevatedButton(
@@ -80,13 +84,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CartPage(
-                              imageUrl: imageUrl,
-                              price: price,
-                            )));
+                cart.add({'imageUrl': dogImageUrl, 'price': price});
 
                 // Navigator.pushNamed(context, '/cart',
                 //     arguments: {'imageUrl': dogImageUrl, 'price': 10.0});

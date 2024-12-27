@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
-  final String imageUrl;
-  final double price;
-
-  CartPage({required this.imageUrl, required this.price});
-
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -21,7 +16,7 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
     // Initially, add the product passed to the CartPage to the cart list
-    addToCart(widget.imageUrl, widget.price);
+    // addToCart(widget.imageUrl, widget.price);
   }
 
   // Method to add item to cart
@@ -32,31 +27,45 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
+  double totalPrice = 0.0;
+
   @override
   Widget build(BuildContext context) {
+    cart = ModalRoute.of(context)!.settings.arguments
+            as List<Map<String, dynamic>>? ??
+        [];
+
+// Iterate through the cart and sum the prices
+    totalPrice = 0.0;
+    for (var item in cart) {
+      totalPrice += item['price'] as double; // Ensure 'price' is of type double
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text("Cart")),
-      body: Column(
+      appBar: AppBar(
+        title: const Text('Cart Screen'),
+      ),
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: cart.length,
-              itemBuilder: (context, index) {
-                final imageUrl = cart[index]['imageUrl'];
-                final price = cart[index]['price'];
-                return ListTile(
-                  leading: Image.network(imageUrl),
-                  title: Text('Price: \$${price.toStringAsFixed(2)}'),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Total: \$${total.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Total $totalPrice',
+                    style: TextStyle(fontSize: 18),
+                  ))),
+          ListView.builder(
+            itemCount: cart.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Image.network(
+                  cart[index]['imageUrl'],
+                  width: 40.0,
+                ),
+                title: Text(cart[index]['price'].toString()),
+              );
+            },
           ),
         ],
       ),

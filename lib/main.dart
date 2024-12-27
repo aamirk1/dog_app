@@ -20,7 +20,7 @@ class DogApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/history': (context) => HistoryPage(),
-      //  '/cart': (context) => CartPage(),
+       '/cart': (context) => CartPage(),
       },
     );
   }
