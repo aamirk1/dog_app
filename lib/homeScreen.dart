@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dog_app/cartScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -39,15 +39,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: const Text('Home Page'),
         actions: [
           IconButton(
-            icon: Icon(Icons.history),
+            icon: const Icon(Icons.history),
             onPressed: () =>
                 Navigator.pushNamed(context, '/history', arguments: history),
           ),
           IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () async {
                 // When the button is pressed, navigate to the CartPage with product details
                 Navigator.pushNamed(context, '/cart', arguments: cart);
@@ -75,21 +75,28 @@ class _HomePageState extends State<HomePage> {
                     dogImageUrl!,
                     height: 250,
                   )
-                : CircularProgressIndicator(),
-            SizedBox(height: 20),
+                : const CircularProgressIndicator(),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: fetchDogImage,
-              child: Text('Fetch New Dog Image'),
+              child: const Text('Fetch New Dog Image'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 cart.add({'imageUrl': dogImageUrl, 'price': price});
+                SnackBar snackBar = const SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Center(child: Text('Item added to cart!')),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  snackBar,
+                );
 
                 // Navigator.pushNamed(context, '/cart',
                 //     arguments: {'imageUrl': dogImageUrl, 'price': 10.0});
               },
-              child: Text('Add to Cart (\$10.0)'),
+              child: const Text('Add to Cart (\$10.0)'),
             ),
           ],
         ),
